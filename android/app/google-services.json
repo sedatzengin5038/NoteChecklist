@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "315852449270",
+    "project_id": "notepadwithcheck",
+    "storage_bucket": "notepadwithcheck.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315852449270:android:1288328d08b0c2f66e13d7",
+        "android_client_info": {
+          "package_name": "com.example.flutterkeep"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkN4fuIp55yGDw2OcbiWtBKdUZD37n8uQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315852449270:android:02970e06bf633c016e13d7",
+        "android_client_info": {
+          "package_name": "com.example.flutterkeepme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkN4fuIp55yGDw2OcbiWtBKdUZD37n8uQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
