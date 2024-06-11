@@ -4,18 +4,18 @@ import 'package:flutterkeepme/core/util/function/app_function_checklist.dart';
 import '/core/core.dart';
 
 class CommonEmptyChecklists extends StatelessWidget {
-  const CommonEmptyChecklists(this.drawerViewChecklist) : super(key: null);
+  const CommonEmptyChecklists(this.drawerView) : super(key: null);
 
-  final DrawerSectionViewChecklist drawerViewChecklist;
+  final DrawerSectionView drawerView;
 
   @override
   Widget build(BuildContext context) {
-    return _switchEmptySectionChecklist(context, drawerViewChecklist);
+    return _switchEmptySectionChecklist(context, drawerView);
   }
 
-  _switchEmptySectionChecklist(BuildContext context, DrawerSectionViewChecklist drawerViewChecklist) {
+  _switchEmptySectionChecklist(BuildContext context, DrawerSectionView drawerViewChecklist) {
     switch (drawerViewChecklist) {
-      case DrawerSectionViewChecklist.homepagechecklist:
+      case DrawerSectionView.homepagechecklist:
         return CommonFixScrolling(
           onRefresh: () => AppFunctionChecklist.onRefreshChecklist(context),
           child: _emptySectionChecklist(
@@ -23,7 +23,7 @@ class CommonEmptyChecklists extends StatelessWidget {
             'Checklist you add appear here',
           ),
         );
-      case DrawerSectionViewChecklist.home:
+      case DrawerSectionView.home:
         return CommonFixScrolling(
           onRefresh: () => AppFunctionChecklist.onRefreshChecklist(context),
           child: _emptySectionChecklist(
@@ -31,7 +31,7 @@ class CommonEmptyChecklists extends StatelessWidget {
             'Checklist you add appear here',
           ),
         );  
-      case DrawerSectionViewChecklist.homepagechecklist:
+      case DrawerSectionView.homepagechecklist:
         return CommonFixScrolling(
           onRefresh: () => AppFunctionChecklist.onRefreshChecklist(context),
           child: _emptySectionChecklist(
@@ -39,12 +39,12 @@ class CommonEmptyChecklists extends StatelessWidget {
             'Checklist you add appear here',
           ),
         );  
-      case DrawerSectionViewChecklist.archive:
+      case DrawerSectionView.archive:
         return _emptySectionChecklist(
           AppIcons.emptyArchivesNote,
           'Your archived Checklists appear here',
         );
-      case DrawerSectionViewChecklist.trash:
+      case DrawerSectionView.trash:
         return _emptySectionChecklist(
           AppIcons.emptyTrashNote,
           'No Checklists in Recycle Bin',

@@ -9,14 +9,14 @@ sealed class ChecklistState extends Equatable {
 }
 
 final class LoadingStateChecklist extends ChecklistState {
-  final DrawerSectionViewChecklist drawerSectionViewChecklist;
+  final DrawerSectionView drawerSectionView;
 
   const LoadingStateChecklist(
-    this.drawerSectionViewChecklist,
+    this.drawerSectionView,
   );
 
   @override
-  List<Object> get props => [drawerSectionViewChecklist];
+  List<Object> get props => [drawerSectionView];
 }
 
 final class ChecklistsViewState extends ChecklistState {
@@ -61,13 +61,13 @@ final class MessageState extends ChecklistState {
 }
 
 final class ErrorState extends MessageState {
-  final DrawerSectionViewChecklist drawerSectionViewChecklist;
+  final DrawerSectionView drawerSectionView;
   const ErrorState(
     super.message,
-    this.drawerSectionViewChecklist,
+    this.drawerSectionView,
   );
   @override
-  List<Object> get props => [message, drawerSectionViewChecklist];
+  List<Object> get props => [message, drawerSectionView];
 }
 
 final class SuccessState extends MessageState {

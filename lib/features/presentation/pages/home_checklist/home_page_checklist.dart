@@ -65,14 +65,14 @@ class HomePageChecklist extends StatelessWidget {
 
   void _displayChecklistsMsg(BuildContext context, ChecklistState state) {
     if (state is SuccessState) {
-      context.read<ChecklistBloc>().add(RefreshChecklists(DrawerSelectChecklist.drawerSectionChecklist));
+      context.read<ChecklistBloc>().add(RefreshChecklists(DrawerSelect.drawerSection));
       AppAlerts.displaySnackbarMsg(context, state.message);
     } else if (state is ToggleSuccessState) {
       AppAlerts.displaySnackarUndoMove(context, state.message);
     } else if (state is EmptyInputsState) {
       AppAlerts.displaySnackbarMsg(context, state.message);
     } else if (state is GoPopChecklistState) {
-      context.read<ChecklistBloc>().add(RefreshChecklists(DrawerSelectChecklist.drawerSectionChecklist));
+      context.read<ChecklistBloc>().add(RefreshChecklists(DrawerSelect.drawerSection));
     } else if (state is GetChecklistByIdState) {
       _getChecklistByIdState(context, state.checklist);
     }

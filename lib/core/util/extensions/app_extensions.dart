@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterkeepme/core/config/enum/status_Checklist.dart';
-import 'package:flutterkeepme/core/util/function/drawer_select_checklist.dart';
 import 'package:flutterkeepme/features/presentation/blocs/checklist/checklist_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -70,7 +69,7 @@ extension DrawerViewsExtensions on DrawerViews {
       DrawerSelect.selectedDrawerSection = drawerSectionForView(this);
 
       if (this == DrawerViews.homechecklist) {
-        context.read<ChecklistBloc>().add(RefreshChecklists(DrawerSelectChecklist.drawerSectionChecklist));
+        context.read<ChecklistBloc>().add(RefreshChecklists(DrawerSelect.drawerSection));
 
       final String? routerName = routerNameForView(this);
       if (routerName != null) {
@@ -103,7 +102,7 @@ extension DrawerViewsExtensions on DrawerViews {
       if (this != DrawerViews.setting) DrawerSelect.selectedDrawerView = this;
 
       DrawerSelect.selectedDrawerSection = drawerSectionForView(this);
-      context.read<ChecklistBloc>().add(RefreshChecklists(DrawerSelectChecklist.drawerSectionChecklist));
+      context.read<ChecklistBloc>().add(RefreshChecklists(DrawerSelect.drawerSection));
 
       final String? routerName = routerNameForView(this);
       if (routerName != null) {

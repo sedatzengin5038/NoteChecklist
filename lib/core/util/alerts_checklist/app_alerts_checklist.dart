@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterkeepme/core/config/enum/status_Checklist.dart';
 
 import 'package:flutterkeepme/core/util/function/color_checklist.dart';
-import 'package:flutterkeepme/core/util/function/drawer_select_checklist.dart';
 import 'package:flutterkeepme/features/data/model/checklist_model.dart';
 import 'package:flutterkeepme/features/presentation/blocs/checklist/checklist_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -88,7 +87,7 @@ class AppAlertsChecklist {
         context.pop();
         context.pop();
         context.read<ChecklistBloc>().add(DeleteChecklist(checklist.id));
-        context.read<ChecklistBloc>().add(RefreshChecklists(DrawerSelectChecklist.drawerSectionChecklist));
+        context.read<ChecklistBloc>().add(RefreshChecklists(DrawerSelect.drawerSection));
       },
     );
     AlertDialog alert = AlertDialog(

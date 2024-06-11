@@ -27,6 +27,11 @@ class CommonLoadingNotes extends StatelessWidget {
           onRefresh: () => AppFunctionChecklist.onRefreshChecklist(context),
           child: const CircularProgressIndicator(),
         );
+      case DrawerSectionView.homepagechecklist:
+        return CommonFixScrolling(
+          onRefresh: () => AppFunctionChecklist.onRefreshChecklist(context),
+          child: const CircularProgressIndicator(),
+        );   
         
       case DrawerSectionView.archive:
         return const Center(child: CircularProgressIndicator());

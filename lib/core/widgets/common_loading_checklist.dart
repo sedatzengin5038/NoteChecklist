@@ -11,7 +11,7 @@ class CommonLoadingChecklist extends StatelessWidget {
     this.checklistSection,
   ) : super(key: null);
 
-  final DrawerSectionViewChecklist checklistSection;
+  final DrawerSectionView checklistSection;
   
 
   @override
@@ -21,26 +21,26 @@ class CommonLoadingChecklist extends StatelessWidget {
 
   Widget switchLoadingViewChecklistsSection(
     BuildContext context,
-    DrawerSectionViewChecklist drawerViewChecklist,
+    DrawerSectionView drawerViewChecklist,
   ) {
     switch (drawerViewChecklist) {
       
-      case DrawerSectionViewChecklist.homepagechecklist:
+      case DrawerSectionView.homepagechecklist:
         
         return CommonFixScrolling(
           onRefresh: () => AppFunctionChecklist.onRefreshChecklist(context),
           child: const CircularProgressIndicator(),
         );
-      case DrawerSectionViewChecklist.home:
+      case DrawerSectionView.home:
         
         return CommonFixScrolling(
           onRefresh: () => AppFunctionChecklist.onRefreshChecklist(context),
           child: const CircularProgressIndicator(),
         );  
-      
-      case DrawerSectionViewChecklist.archive:
+    
+      case DrawerSectionView.archive:
         return const Center(child: CircularProgressIndicator());
-      case DrawerSectionViewChecklist.trash:
+      case DrawerSectionView.trash:
         return const Center(child: CircularProgressIndicator());
     }
   }

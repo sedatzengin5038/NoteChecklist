@@ -40,6 +40,17 @@ class CommonChecklistsView extends StatelessWidget {
           GridNotesChecklist(checklist: otherChecklists, isShowDismisse: true),
           const SliverToBoxAdapter(child: SizedBox(height: 120))
         ];
+
+      case DrawerSectionView.homepagechecklist:
+        return [
+          pinnedChecklists.isNotEmpty
+              ? const HeaderText(text: 'Pinned')
+              : const SliverToBoxAdapter(),
+          GridNotesChecklist(checklist: pinnedChecklists, isShowDismisse: true),
+          const HeaderText(text: 'Other'),
+          GridNotesChecklist(checklist: otherChecklists, isShowDismisse: true),
+          const SliverToBoxAdapter(child: SizedBox(height: 120))
+        ];   
       case DrawerSectionView.archive:
         return [GridNotesChecklist(checklist: otherChecklists, isShowDismisse: false)];
       case DrawerSectionView.trash:

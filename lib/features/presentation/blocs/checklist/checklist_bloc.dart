@@ -6,22 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterkeepme/core/config/enum/drawer_section_view_checklist.dart';
 import 'package:flutterkeepme/core/config/enum/status_Checklist.dart';
-import 'package:flutterkeepme/core/util/function/drawer_select_checklist.dart';
 import 'package:flutterkeepme/features/data/model/checklist_model.dart';
 import 'package:flutterkeepme/features/domain/usecases_checklist/add_checklist.dart';
 import 'package:flutterkeepme/features/domain/usecases_checklist/delete_checklist.dart';
 import 'package:flutterkeepme/features/domain/usecases_checklist/get_checklist.dart';
 import 'package:flutterkeepme/features/domain/usecases_checklist/get_checklist_by_id.dart';
 import 'package:flutterkeepme/features/domain/usecases_checklist/update_checklist.dart';
-
-
 import '../../../../core/core.dart';
-
-
 
 part 'checklist_event.dart';
 part 'checklist_state.dart';
-
 
 class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
   final GetChecklistsUsecase getChecklists;
@@ -29,16 +23,15 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
   final AddChecklistUsecase addChecklist;
   final UpdateChecklistUsecase updateChecklist;
   final DeleteChecklistUsecase deleteChecklist;
-  
+
   ChecklistBloc({
     required this.getChecklists,
     required this.getChecklistById,
     required this.addChecklist,
     required this.updateChecklist,
     required this.deleteChecklist,
-  }) : super(LoadingStateChecklist(DrawerSelectChecklist.drawerSectionChecklist)) {
-    
-    
+  }) : super(LoadingStateChecklist(
+            DrawerSelect.drawerSection)) {
     on<LoadChecklists>(_onLoadChecklists);
     on<AddChecklist>(_onAddChecklist);
     on<GetChecklistModelById>(_onGetById);
@@ -56,41 +49,44 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
 
   ChecklistModel? oldChecklist;
   bool _isNewChecklist = false;
-
   int _colorIndex = 0;
   int get currentColor => _colorIndex;
-
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   GlobalKey<ScaffoldState> get appScaffoldState => _key;
 
   _onLoadChecklists(LoadChecklists event, Emitter<ChecklistState> emit) async {
     print('Loading checklists...');
-    emit(LoadingStateChecklist(event.drawerSectionViewChecklist));
-    
+    emit(LoadingStateChecklist(event.drawerSectionView));
+
     final failureOrLoaded = await getChecklists();
     print('Checklists loaded: $failureOrLoaded');
-    
+
     // Simulating network delay
     await Future.delayed(const Duration(seconds: 2));
-    
-    emit(_mapLoadChecklistsState(failureOrLoaded, event.drawerSectionViewChecklist));
+
+    emit(_mapLoadChecklistsState(
+        failureOrLoaded, event.drawerSectionView));
   }
 
-  _onRefreshChecklists(RefreshChecklists event, Emitter<ChecklistState> emit) async {
+  _onRefreshChecklists(
+      RefreshChecklists event, Emitter<ChecklistState> emit) async {
     print('Refreshing checklists...');
-    emit(LoadingStateChecklist(event.drawerSectionViewCheclist));
-    
+    emit(LoadingStateChecklist(event.drawerSectionView));
+
     final failureOrLoaded = await getChecklists();
-    emit(_mapLoadChecklistsState(failureOrLoaded, event.drawerSectionViewCheclist));
+    print(failureOrLoaded);
+    emit(_mapLoadChecklistsState(
+        failureOrLoaded, event.drawerSectionViewCheclist));
   }
 
   _onAddChecklist(AddChecklist event, Emitter<ChecklistState> emit) async {
-    final Either<Failure, Unit> failureOrSuccess = await addChecklist(event.checklist);
+    final Either<Failure, Unit> failureOrSuccess =
+        await addChecklist(event.checklist);
     emit(
       failureOrSuccess.fold(
         (failure) => (ErrorState(
           _mapFailureMsg(failure),
-          DrawerSelectChecklist.drawerSectionChecklist,
+          DrawerSelect.drawerSection,
         )),
         (_) => (const SuccessState(ADD_SUCCESS_MSG)),
       ),
@@ -117,26 +113,29 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
     );
   }
 
-  _onUpdateChecklist(UpdateChecklist event, Emitter<ChecklistState> emit) async {
-    final Either<Failure, Unit> failureOrSuccess = await updateChecklist(event.checklist);
+  _onUpdateChecklist(
+      UpdateChecklist event, Emitter<ChecklistState> emit) async {
+    final Either<Failure, Unit> failureOrSuccess =
+        await updateChecklist(event.checklist);
     emit(
       failureOrSuccess.fold(
         (failure) => (ErrorState(
           _mapFailureMsg(failure),
-          DrawerSelectChecklist.drawerSectionChecklist,
+          DrawerSelect.drawerSection,
         )),
         (_) => (const SuccessState(UPDATE_SUCCESS_MSG)),
       ),
     );
   }
 
-  _onDeleteChecklist(DeleteChecklist event, Emitter<ChecklistState> emit) async {
+  _onDeleteChecklist(
+      DeleteChecklist event, Emitter<ChecklistState> emit) async {
     final failureOrSuccess = await deleteChecklist(event.checklistId);
     emit(
       failureOrSuccess.fold(
         (failure) => (ErrorState(
           _mapFailureMsg(failure),
-          DrawerSelectChecklist.drawerSectionChecklist,
+          DrawerSelect.drawerSection,
         )),
         (_) => (const SuccessState(DELETE_SUCCESS_MSG)),
       ),
@@ -144,12 +143,14 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
     emit(GoPopChecklistState());
   }
 
-  _onModifColorChecklist(ModifColorChecklist event, Emitter<ChecklistState> emit) {
+  _onModifColorChecklist(
+      ModifColorChecklist event, Emitter<ChecklistState> emit) {
     _colorIndex = event.colorIndex;
     emit(ModifedColorChecklistState(_colorIndex));
   }
 
-  _onPopChecklistAction(PopChecklistAction event, Emitter<ChecklistState> emit) async {
+  _onPopChecklistAction(
+      PopChecklistAction event, Emitter<ChecklistState> emit) async {
     final ChecklistModel currentChecklist = event.currentChecklist;
     final ChecklistModel originChecklist = event.originChecklist;
 
@@ -157,7 +158,8 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
     final bool isDirty = currentChecklist != originChecklist;
 
     // Set the modified time
-    final ChecklistModel updatedChecklist = currentChecklist.copyWith(modifiedTime: Timestamp.now());
+    final ChecklistModel updatedChecklist =
+        currentChecklist.copyWith(modifiedTime: Timestamp.now());
 
     // Check if the Checklist is empty
     final bool isChecklistEmpty =
@@ -168,7 +170,9 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
       add(EmptyInputs());
     } else if (_isNewChecklist || (!_isNewChecklist && isDirty)) {
       // Existing Checklist is dirty, update the Checklist
-      _isNewChecklist ? add(AddChecklist(currentChecklist)) : add(UpdateChecklist(updatedChecklist));
+      _isNewChecklist
+          ? add(AddChecklist(currentChecklist))
+          : add(UpdateChecklist(updatedChecklist));
     }
 
     // Notify to close the details page
@@ -201,7 +205,7 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
       return failureOrSuccess.fold(
         (failure) => ErrorState(
           _mapFailureMsg(failure),
-          DrawerSelectChecklist.drawerSectionChecklist,
+          DrawerSelect.drawerSection,
         ),
         (_) => successState,
       );
@@ -242,7 +246,8 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
     emit(GoPopChecklistState());
   }
 
-  _onUndoMoveChecklist(UndoMoveChecklist event, Emitter<ChecklistState> emit) async {
+  _onUndoMoveChecklist(
+      UndoMoveChecklist event, Emitter<ChecklistState> emit) async {
     await updateChecklist(oldChecklist!);
     emit(GoPopChecklistState());
   }
@@ -257,19 +262,26 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
       (failure) {
         return (ErrorState(
           _mapFailureMsg(failure),
-          DrawerSelectChecklist.drawerSectionChecklist,
+          DrawerSelect.drawerSection,
         ));
       },
-      (Checklists) {
-        Checklists.sort((a, b) => b.modifiedTime.compareTo(a.modifiedTime));
-        List<ChecklistModel> filterChecklistsByState(List<ChecklistModel> Checklists, StateChecklist state) {
-          return Checklists.where((Checklist) => Checklist.stateChecklist == state).toList();
+      (checklists) {
+        checklists.sort((a, b) => b.modifiedTime.compareTo(a.modifiedTime));
+        List<ChecklistModel> filterChecklistsByState(
+            List<ChecklistModel> checklists, StateChecklist state) {
+          return checklists
+              .where((checklist) => checklist.stateChecklist == state)
+              .toList();
         }
 
-        final pinnedChecklists = filterChecklistsByState(Checklists, StateChecklist.pinned);
-        final undefinedChecklists = filterChecklistsByState(Checklists, StateChecklist.undefined);
-        final archiveChecklists = filterChecklistsByState(Checklists, StateChecklist.archived);
-        final trashChecklists = filterChecklistsByState(Checklists, StateChecklist.trash);
+        final pinnedChecklists =
+            filterChecklistsByState(checklists, StateChecklist.pinned);
+        final undefinedChecklists =
+            filterChecklistsByState(checklists, StateChecklist.undefined);
+        final archiveChecklists =
+            filterChecklistsByState(checklists, StateChecklist.archived);
+        final trashChecklists =
+            filterChecklistsByState(checklists, StateChecklist.trash);
 
         bool hasPinnedChecklists = pinnedChecklists.isEmpty;
         bool hasUndefinedChecklists = undefinedChecklists.isEmpty;
@@ -278,32 +290,32 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
 
         switch (drawerSectionViewChecklist) {
           case DrawerSectionViewChecklist.homepagechecklist:
-            if (Checklists.isEmpty || (!hasUndefinedChecklists && !hasPinnedChecklists)) {
-              return EmptyChecklistState(drawerSectionViewChecklist);
-            }
-            return hasPinnedChecklists
-                ? ChecklistsViewState(undefinedChecklists, pinnedChecklists)
-                : ChecklistsViewState(undefinedChecklists, const []);
           case DrawerSectionViewChecklist.home:
-            if (Checklists.isEmpty || (!hasUndefinedChecklists && !hasPinnedChecklists)) {
+            if (checklists.isEmpty ||
+                (!hasUndefinedChecklists && !hasPinnedChecklists)) {
               return EmptyChecklistState(drawerSectionViewChecklist);
             }
             return hasPinnedChecklists
                 ? ChecklistsViewState(undefinedChecklists, pinnedChecklists)
                 : ChecklistsViewState(undefinedChecklists, const []);
-   
 
           case DrawerSectionViewChecklist.archive:
-            if (Checklists.isEmpty || (!hasArchiveChecklists)) {
+            if (checklists.isEmpty || (!hasArchiveChecklists)) {
               return EmptyChecklistState(drawerSectionViewChecklist);
             }
             return ChecklistsViewState(archiveChecklists, const []);
 
           case DrawerSectionViewChecklist.trash:
-            if (Checklists.isEmpty || (!hasTrashChecklists)) {
+            if (checklists.isEmpty || (!hasTrashChecklists)) {
               return EmptyChecklistState(drawerSectionViewChecklist);
             }
             return ChecklistsViewState(trashChecklists, const []);
+
+          default:
+            return ErrorState(
+              'Unhandled drawer section view checklist: $drawerSectionViewChecklist',
+              DrawerSelect.drawerSection,
+            );
         }
       },
     );
@@ -317,7 +329,7 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
       case NoDataFailure:
         return NO_DATA_FAILURE_MSG;
       default:
-        return 'Unexpected Error , Please try again later . ';
+        return 'Unexpected Error, Please try again later.';
     }
   }
 }

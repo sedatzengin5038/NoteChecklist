@@ -24,7 +24,7 @@ class AppProviders extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => di.gI<ChecklistBloc>()
-            ..add(const LoadChecklists(drawerSectionViewChecklist: DrawerSectionViewChecklist.homepagechecklist)),
+            ..add(const LoadChecklists(drawerSectionView: DrawerSectionView.homepagechecklist)),
         ),
         BlocProvider(create: (_) => di.gI<StatusGridCubit>()),
         BlocProvider(create: (_) => di.gI<StatusIconsCubit>()),

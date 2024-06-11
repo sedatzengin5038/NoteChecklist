@@ -22,6 +22,15 @@ class CommonEmptyNotes extends StatelessWidget {
             'Note you add appear here',
           ),
         );
+
+      case DrawerSectionView.homepagechecklist:
+        return CommonFixScrolling(
+          onRefresh: () => AppFunctionChecklist.onRefreshChecklist(context),
+          child: _emptySection(
+            AppIcons.emptyNote,
+            'Note you add appear here',
+          ),
+        );  
       case DrawerSectionView.archive:
         return _emptySection(
           AppIcons.emptyArchivesNote,

@@ -39,6 +39,16 @@ class CommonNotesView extends StatelessWidget {
           GridNotes(notes: otherNotes, isShowDismisse: true),
           const SliverToBoxAdapter(child: SizedBox(height: 120))
         ];
+      case DrawerSectionView.homepagechecklist:
+        return [
+          pinnedNotes.isNotEmpty
+              ? const HeaderText(text: 'Pinned')
+              : const SliverToBoxAdapter(),
+          GridNotes(notes: pinnedNotes, isShowDismisse: true),
+          const HeaderText(text: 'Other'),
+          GridNotes(notes: otherNotes, isShowDismisse: true),
+          const SliverToBoxAdapter(child: SizedBox(height: 120))
+        ];  
       case DrawerSectionView.archive:
         return [GridNotes(notes: otherNotes, isShowDismisse: false)];
       case DrawerSectionView.trash:

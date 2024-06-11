@@ -56,7 +56,6 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
 
   _onLoadNotes(LoadNotes event, Emitter<NoteState> emit) async {
     final failureOrLoaded = await getNotes();
-    print(failureOrLoaded);
     emit(LoadingState(event.drawerSectionView));
     await Future.delayed(const Duration(seconds: 2));
     emit(_mapLoadNotesState(failureOrLoaded, event.drawerSectionView));
@@ -64,6 +63,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
 
   _onRefreshNotes(RefreshNotes event, Emitter<NoteState> emit) async {
     final failureOrLoaded = await getNotes();
+    
     emit(LoadingState(event.drawerSectionView));
     emit(_mapLoadNotesState(failureOrLoaded, event.drawerSectionView));
   }
@@ -269,6 +269,14 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
             return hasPinnedNotes
                 ? NotesViewState(undefinedNotes, pinnedNotes)
                 : NotesViewState(undefinedNotes, const []);
+
+          case DrawerSectionView.homepagechecklist:
+            if (notes.isEmpty || (!hasUndefinedNotes && !hasPinnedNotes)) {
+              return EmptyNoteState(drawerSectionView);
+            }
+            return hasPinnedNotes
+                ? NotesViewState(undefinedNotes, pinnedNotes)
+                : NotesViewState(undefinedNotes, const []);      
 
           case DrawerSectionView.archive:
             if (notes.isEmpty || (!hasArchiveNotes)) {
