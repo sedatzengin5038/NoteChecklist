@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutterkeepme/core/config/enum/drawer_section_view_checklist.dart';
 import 'package:flutterkeepme/core/config/enum/status_Checklist.dart';
 import 'package:flutterkeepme/core/util/function/drawer_select_checklist.dart';
 import 'package:flutterkeepme/features/presentation/blocs/checklist/checklist_bloc.dart';
@@ -35,7 +34,7 @@ extension DrawerViewsExtensions on DrawerViews {
       case DrawerViews.home:
         return 'Notes';
       case DrawerViews.homechecklist:
-        return 'homechecklist';        
+        return 'checklist';        
       case DrawerViews.archive:
         return 'Archive';
       case DrawerViews.trash:
@@ -69,7 +68,9 @@ extension DrawerViewsExtensions on DrawerViews {
       if (this != DrawerViews.setting) DrawerSelect.selectedDrawerView = this;
 
       DrawerSelect.selectedDrawerSection = drawerSectionForView(this);
-      context.read<NoteBloc>().add(RefreshNotes(DrawerSelect.drawerSection));
+
+      if (this == DrawerViews.homechecklist) {
+        context.read<ChecklistBloc>().add(RefreshChecklists(DrawerSelectChecklist.drawerSectionChecklist));
 
       final String? routerName = routerNameForView(this);
       if (routerName != null) {
@@ -80,13 +81,28 @@ extension DrawerViewsExtensions on DrawerViews {
         }
       }
       Navigator.pop(context);
+      }
+      else {
+        context.read<NoteBloc>().add(RefreshNotes(DrawerSelect.drawerSection));
+
+      final String? routerName = routerNameForView(this);
+      if (routerName != null) {
+        if (routerName == AppRouterName.setting.name) {
+          GoRouter.of(context).pushNamed(routerName);
+        } else {
+          GoRouter.of(context).goNamed(routerName);
+        }
+      }
+      Navigator.pop(context);
+      }
+      
     };
   }
   void Function(BuildContext context) get onTapItemDrawerChecklist {
     return (context) {
-      if (this != DrawerViews.setting) DrawerSelectChecklist.selectedDrawerView = this;
+      if (this != DrawerViews.setting) DrawerSelect.selectedDrawerView = this;
 
-      DrawerSelectChecklist.selectedDrawerSection = drawerSectionForViewChecklist(this);
+      DrawerSelect.selectedDrawerSection = drawerSectionForView(this);
       context.read<ChecklistBloc>().add(RefreshChecklists(DrawerSelectChecklist.drawerSectionChecklist));
 
       final String? routerName = routerNameForView(this);
@@ -133,19 +149,7 @@ extension DrawerViewsExtensions on DrawerViews {
     }
   }
 
-  DrawerSectionViewChecklist drawerSectionForViewChecklist(DrawerViews view) {
-    switch (view) {
- 
-      case DrawerViews.homechecklist:
-        return DrawerSectionViewChecklist.homepagechecklist;        
-      case DrawerViews.archive:
-        return DrawerSectionViewChecklist.archive;
-      case DrawerViews.trash:
-        return DrawerSectionViewChecklist.trash;
-      default:
-        return DrawerSelectChecklist.drawerSectionChecklist;
-    }
-  }
+  
 }
 
 extension StatusNoteX on StateNote {

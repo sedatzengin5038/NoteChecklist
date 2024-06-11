@@ -9,16 +9,15 @@ import 'package:flutterkeepme/core/config/searching/notes_searching.dart';
 
 import 'package:flutterkeepme/features/presentation/blocs/note/note_bloc.dart';
 
-
 class CommonSearchBar extends StatelessWidget {
   const CommonSearchBar({
     super.key,
   });
 
-  final String hintText = 'Search*--- your notes';
-
   @override
   Widget build(BuildContext context) {
+    String hintText = _determineHintText(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: SizedBox(
@@ -49,6 +48,21 @@ class CommonSearchBar extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _determineHintText(BuildContext context) {
+    var noteBlocScaffoldState = context.read<NoteBloc>().appScaffoldState.currentState;
+    if (noteBlocScaffoldState != null) {
+      return 'Search your notes';
+    } else {
+      var checklistBlocScaffoldState = context.read<ChecklistBloc>().appScaffoldState.currentState;
+      if (checklistBlocScaffoldState != null) {
+        return 'Search your checklists';
+      } else {
+        print('Both NoteBloc and ChecklistBloc ScaffoldStates are null');
+        return 'Search';
+      }
+    }
   }
 
   void _openDrawer(BuildContext context) {

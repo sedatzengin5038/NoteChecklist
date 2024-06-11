@@ -49,6 +49,7 @@ class HomePageChecklist extends StatelessWidget {
         } else if (state is ErrorState) {
           return CommonEmptyChecklists(state.drawerSectionViewChecklist);
         } else if (state is ChecklistsViewState) {
+          
           return SliverChecklists(
             child: CommonChecklistsViewChecklist(
               drawerSection: DrawerSectionViewChecklist.homepagechecklist,
@@ -80,7 +81,7 @@ class HomePageChecklist extends StatelessWidget {
   void _getChecklistByIdState(BuildContext context, ChecklistModel checklist) {
     context.read<StatusIconsCubitChecklist>().toggleIconsStatusChecklist(checklist);
     context.read<ChecklistBloc>().add(ModifColorChecklist(checklist.colorIndex));
-    
+    print(checklist);
     context.pushNamed(
       AppRouterName.checklist.name,
       pathParameters: {'checklistId': checklist.id},

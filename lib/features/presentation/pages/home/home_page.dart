@@ -71,7 +71,7 @@ class HomePage extends StatelessWidget {
   void _getNoteByIdState(BuildContext context, NoteModel note) {
     context.read<StatusIconsCubit>().toggleIconsStatus(note);
     context.read<NoteBloc>().add(ModifColorNote(note.colorIndex));
-    
+    print(note);
     context.pushNamed(
       AppRouterName.note.name,
       pathParameters: {'noteId': note.id},

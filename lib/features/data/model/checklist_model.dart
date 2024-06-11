@@ -22,7 +22,7 @@ class ChecklistModel extends Equatable {
   });
 
   ChecklistModel.empty({
-    String? id = "",
+    String? id,
     this.title = '',
     this.content = '',
     Timestamp? modifiedTime,

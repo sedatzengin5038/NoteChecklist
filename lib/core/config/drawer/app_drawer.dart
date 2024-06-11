@@ -18,20 +18,20 @@ class AppDrawer extends StatelessWidget {
       // Return BlocBuilder for ChecklistBloc if the current location is '/homechecklist'
       return BlocBuilder<ChecklistBloc, ChecklistState>(
         builder: (context, checklistState) {
-          return _buildDrawerContent(context, checklistState: checklistState);
+          return _buildDrawerContent(context);
         },
       );
     } else {
       // Return BlocBuilder for NoteBloc for other routes
       return BlocBuilder<NoteBloc, NoteState>(
         builder: (context, noteState) {
-          return _buildDrawerContent(context, noteState: noteState);
+          return _buildDrawerContent(context);
         },
       );
     }
   }
 
-  Widget _buildDrawerContent(BuildContext context, {NoteState? noteState, ChecklistState? checklistState}) {
+  Widget _buildDrawerContent(BuildContext context) {
     return Drawer(
       child: SingleChildScrollView(
         child: Column(
