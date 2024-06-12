@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterkeepme/core/config/drawer/app_drawer.dart';
 import 'package:flutterkeepme/core/config/enum/app_routes.dart';
+import 'package:flutterkeepme/core/config/enum/drawer_section_view.dart';
 import 'package:flutterkeepme/core/config/enum/drawer_section_view_checklist.dart';
-import 'package:flutterkeepme/core/util/function/drawer_select_checklist.dart';
 import 'package:flutterkeepme/core/util/util.dart';
+import 'package:flutterkeepme/core/widgets/common_checklist_view.dart';
 import 'package:flutterkeepme/core/widgets/common_checklist_view_checklist.dart';
 import 'package:flutterkeepme/core/widgets/common_empty_checklist.dart';
 import 'package:flutterkeepme/core/widgets/common_loading_checklist.dart';
@@ -13,9 +14,6 @@ import 'package:flutterkeepme/features/presentation/blocs/checklist/checklist_bl
 import 'package:flutterkeepme/features/presentation/blocs/status_icons_checklist/status_icons_cubit_checklist.dart';
 import 'package:flutterkeepme/features/presentation/pages/home_checklist/widgets/sliver_checklist.dart';
 import 'package:go_router/go_router.dart';
-
-
-
 
 class HomePageChecklist extends StatelessWidget {
   const HomePageChecklist({super.key});
@@ -37,22 +35,25 @@ class HomePageChecklist extends StatelessWidget {
   AppBar _buildAppbar() => AppBar(toolbarHeight: 0);
 
   Widget _buildBody(BuildContext context) {
+    
     return BlocConsumer<ChecklistBloc, ChecklistState>(
       listener: (context, state) => _displayChecklistsMsg(context, state),
       builder: (context, state) {
         print(state);
         if (state is LoadingStateChecklist) {
-          return CommonLoadingChecklist(state.drawerSectionViewChecklist);
+          return CommonLoadingChecklist(state.drawerSectionView);
         } else if (state is EmptyChecklistState) {
           
-          return CommonEmptyChecklists(state.drawerSectionViewChecklist);
+          return CommonEmptyChecklists(state.drawerSectionView);
         } else if (state is ErrorState) {
-          return CommonEmptyChecklists(state.drawerSectionViewChecklist);
+          
+          return CommonEmptyChecklists(state.drawerSectionView);
         } else if (state is ChecklistsViewState) {
           
+          
           return SliverChecklists(
-            child: CommonChecklistsViewChecklist(
-              drawerSection: DrawerSectionViewChecklist.homepagechecklist,
+            child: CommonChecklistsView(
+              drawerSection: DrawerSectionView.homepagechecklist,
               otherChecklists: state.otherChecklists,
               pinnedChecklists: state.pinnedChecklists,
             ),

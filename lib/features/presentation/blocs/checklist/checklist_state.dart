@@ -22,8 +22,10 @@ final class LoadingStateChecklist extends ChecklistState {
 final class ChecklistsViewState extends ChecklistState {
   final List<ChecklistModel> otherChecklists;
   final List<ChecklistModel> pinnedChecklists;
+  
 
   const ChecklistsViewState(
+   
     this.otherChecklists,
     this.pinnedChecklists,
   );
@@ -86,14 +88,14 @@ final class EmptyInputsState extends MessageState {
 final class GoPopChecklistState extends ChecklistState {}
 
 final class EmptyChecklistState extends ChecklistState {
-  final DrawerSectionViewChecklist drawerSectionViewChecklist;
+  final DrawerSectionView drawerSectionView;
 
   const EmptyChecklistState(
-    this.drawerSectionViewChecklist,
+    this.drawerSectionView,
   );
 
   @override
-  List<Object> get props => [drawerSectionViewChecklist];
+  List<Object> get props => [drawerSectionView];
 }
 
 final class AvailableChecklistState extends ChecklistState {

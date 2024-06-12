@@ -24,6 +24,11 @@ class CommonErrorNotes extends StatelessWidget {
           onRefresh: () => AppFunctionChecklist.onRefreshChecklist(context),
           child: _errorSection(AppIcons.error, 'errorMsg'),
         );
+      case DrawerSectionView.homepagechecklist:
+        return CommonFixScrolling(
+          onRefresh: () => AppFunctionChecklist.onRefreshChecklist(context),
+          child: _errorSection(AppIcons.error, 'errorMsg'),
+        );  
       case DrawerSectionView.archive:
         return _errorSection(AppIcons.error, 'errorMsg');
       case DrawerSectionView.trash:

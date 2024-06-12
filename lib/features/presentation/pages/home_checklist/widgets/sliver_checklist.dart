@@ -38,7 +38,7 @@ class SliverChecklists extends StatelessWidget {
         toolbarHeight: 50,
         leadingWidth: 0,
         forceMaterialTransparency: true,
-        title: CommonSearchBarChecklist(),
+        title: CommonSearchBar(),
         systemOverlayStyle: AppDevice.setStatusBartSilverAppBar(),
         leading: SizedBox(),
       ),

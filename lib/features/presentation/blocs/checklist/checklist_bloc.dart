@@ -4,7 +4,6 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutterkeepme/core/config/enum/drawer_section_view_checklist.dart';
 import 'package:flutterkeepme/core/config/enum/status_Checklist.dart';
 import 'package:flutterkeepme/features/data/model/checklist_model.dart';
 import 'package:flutterkeepme/features/domain/usecases_checklist/add_checklist.dart';
@@ -76,7 +75,7 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
     final failureOrLoaded = await getChecklists();
     print(failureOrLoaded);
     emit(_mapLoadChecklistsState(
-        failureOrLoaded, event.drawerSectionViewCheclist));
+        failureOrLoaded, event.drawerSectionView));
   }
 
   _onAddChecklist(AddChecklist event, Emitter<ChecklistState> emit) async {
@@ -256,7 +255,7 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
   //=> // Map Return : Pin Checklists || Not Pin Checklists(Other Checklists) || Empty Checklists
   ChecklistState _mapLoadChecklistsState(
     Either<Failure, List<ChecklistModel>> either,
-    DrawerSectionViewChecklist drawerSectionViewChecklist,
+    DrawerSectionView drawerSectionView,
   ) {
     return either.fold(
       (failure) {
@@ -288,32 +287,32 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
         bool hasArchiveChecklists = archiveChecklists.isEmpty;
         bool hasTrashChecklists = trashChecklists.isEmpty;
 
-        switch (drawerSectionViewChecklist) {
-          case DrawerSectionViewChecklist.homepagechecklist:
-          case DrawerSectionViewChecklist.home:
+        switch (drawerSectionView) {
+          case DrawerSectionView.homepagechecklist:
+          case DrawerSectionView.home:
             if (checklists.isEmpty ||
                 (!hasUndefinedChecklists && !hasPinnedChecklists)) {
-              return EmptyChecklistState(drawerSectionViewChecklist);
+              return EmptyChecklistState(drawerSectionView);
             }
             return hasPinnedChecklists
                 ? ChecklistsViewState(undefinedChecklists, pinnedChecklists)
                 : ChecklistsViewState(undefinedChecklists, const []);
 
-          case DrawerSectionViewChecklist.archive:
+          case DrawerSectionView.archive:
             if (checklists.isEmpty || (!hasArchiveChecklists)) {
-              return EmptyChecklistState(drawerSectionViewChecklist);
+              return EmptyChecklistState(drawerSectionView);
             }
             return ChecklistsViewState(archiveChecklists, const []);
 
-          case DrawerSectionViewChecklist.trash:
+          case DrawerSectionView.trash:
             if (checklists.isEmpty || (!hasTrashChecklists)) {
-              return EmptyChecklistState(drawerSectionViewChecklist);
+              return EmptyChecklistState(drawerSectionView);
             }
             return ChecklistsViewState(trashChecklists, const []);
 
           default:
             return ErrorState(
-              'Unhandled drawer section view checklist: $drawerSectionViewChecklist',
+              'Unhandled drawer section view checklist: $drawerSectionView',
               DrawerSelect.drawerSection,
             );
         }

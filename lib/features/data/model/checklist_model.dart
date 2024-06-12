@@ -13,7 +13,7 @@ class ChecklistModel extends Equatable {
   final StateChecklist stateChecklist;
 
   const ChecklistModel({
-    required this.id,
+    required this.id, 
     required this.title,
     required this.content,
     required this.colorIndex,

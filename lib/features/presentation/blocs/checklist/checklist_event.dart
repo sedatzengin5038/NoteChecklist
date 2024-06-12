@@ -10,25 +10,25 @@ sealed class ChecklistEvent extends Equatable {
 final class EmptyInputs extends ChecklistEvent {}
 
 final class LoadChecklists extends ChecklistEvent {
-  final DrawerSectionViewChecklist drawerSectionViewChecklist;
+  final DrawerSectionView drawerSectionView;
 
   const LoadChecklists({
-    this.drawerSectionViewChecklist = DrawerSectionViewChecklist.homepagechecklist,
+    this.drawerSectionView = DrawerSectionView.homepagechecklist,
   });
 
   @override
-  List<Object> get props => [drawerSectionViewChecklist];
+  List<Object> get props => [drawerSectionView];
 }
 
 final class RefreshChecklists extends ChecklistEvent {
-  final DrawerSectionViewChecklist drawerSectionViewCheclist;
+  final DrawerSectionView drawerSectionView;
 
   const RefreshChecklists(
-    this.drawerSectionViewCheclist,
+    this.drawerSectionView,
   );
 
   @override
-  List<Object> get props => [drawerSectionViewCheclist];
+  List<Object> get props => [drawerSectionView];
 }
 
 final class AddChecklist extends ChecklistEvent {
